@@ -1,0 +1,285 @@
+---
+title: "Publicidad y ventas"
+output: html_notebook
+---
+## Advertising and Sales
+
+El dataset usado en este documento presenta datos relacionados entre la publicidad y las ventas. 
+Este dataset se puede encontrar en [Kaggle](https://www.kaggle.com/sazid28/advertising.csv), tiene una usabilidad de 4.1 en una escala de 1 a 10 en relación a la faciidad de entendimiento e incluye metadatos esenciales, la puntuación se otorga porque solo cuenta con etiquetas, nombre de las columnas,  licencia especifica, formatos de archivo aceptables para ser usados y un núcleo público. 
+Tiene un data explorer de 4.64 KB, y en el summary se especifica que hace parte de un único archivo con 5 columnas. Entre las tags especificadas esta business services y por ahora tiene 10 kernels. El creador es el usuario de Kaggle Sagidur Rahman quien hizo la última actualización en el 2018. 
+
+
+## GGPLOT2
+
+ggplot2 es una visualización de datos de paquete para la programación estadística lenguaje R . Creado por Hadley Wickham en 2005, ggplot2 es una implementación de la Gramática de gráficos de Leland Wilkinson , un esquema general para la visualización de datos que divide los gráficos en componentes semánticos como escalas y capas. ggplot2 puede servir como un reemplazo para los gráficos base en R y contiene una serie de valores predeterminados para la visualización web e impresa de escalas comunes. Desde 2005, ggplot2 ha crecido en uso para convertirse en uno de los paquetes R más populares.  Está licenciado bajo GNU GPL v2.
+Su instalación requiere del siguiente comando:
+
+`install.packages("ggplot2")`
+
+Otros paquetes instalados:
+
+`install.packages("coefplot")`
+
+En primer lugar importamos la libreria GGPLOT2:
+```{r}
+library(ggplot2)
+library(coefplot)
+```
+## Exploración
+Realizamos la lectura del dataframe Advertising, que se encuentra en formato csv o archivo separado por comas.
+```{r}
+#Leemos el archivo en formato de tabla y creamos un marco de datos y crea un marco de datos.
+ObjDataset=read.table("Advertising.csv",header=T,sep=",")
+#Adjuntamos la base de datos a la ruta de busqueda
+attach(ObjDataset)
+#Obtenemos los nombres de los objetos del dataset
+names(ObjDataset)
+```
+Realizamos una pre-visualizacion del dataset
+```{r}
+#Devolvemos la primera parte del dataset
+head(ObjDataset)
+```
+Observamos caracteristicas basicas del dataset:
+```{r}
+#Devolvemos una estimacion de la memoria necesaria que usa R para almacenar el dataset
+object.size(ObjDataset)
+```
+```{r}
+#Devolvemos la dimension del dataset
+dim(ObjDataset)
+```
+```{r}
+#Mostramos la forma compacta del dataset
+str(ObjDataset)
+```
+```{r}
+#Mostramos la forma compacta de la columna TV
+str(X)
+```
+```{r}
+#Mostramos la forma compacta de la columna TV
+str(TV)
+```
+```{r}
+#Mostramos la forma compacta de la columna radio
+str(radio)
+```
+```{r}
+#Mostramos la forma compacta de la columna newspaper
+str(newspaper)
+```
+```{r}
+#Mostramos la forma compacta de la columna sales
+str(sales)
+```
+```{r}
+#Retornamos el tipo de dato de la columna X
+class(X)
+```
+```{r}
+#Retornamos el tipo de dato de la columna TV
+class(TV)
+```
+```{r}
+#Retornamos el tipo de dato de la columna radio
+class(radio)
+```
+```{r}
+#Retornamos el tipo de dato de la columna newspaper
+class(newspaper)
+```
+```{r}
+#Retornamos el tipo de dato de la columna Target (sales)
+class(sales)
+```
+```{r}
+#Observamos si faltan datos
+head(is.na(ObjDataset))
+```
+La variables ventas (sales) sera tomada como la variable objetivo o target. 
+```{r}
+#colnames(ObjDataset)[5]="Target"
+```
+```{r}
+#Retornamos el tipo de dato de la columna Target (sales)
+class(sales)
+```
+## Analísis estadístico
+### Media
+Es la media aritmética o promedio de los valores de una variable. Es decir la suma de los valores dividido por el tamaño muetral.
+
+### Mediana
+Es un valor que divide a las observaciones en dos grupos con el mismo número de individuos(percentil 50). Si el número de datos es par, se elige la media de los dos datos centrales.
+
+### Cuartil
+Son los tiles que se multiplican por un cuarto de un conjunto de datos.
+
+### Primer cuartil
+La mediana de la primera mitad de valores.
+
+### Segundo cuartil
+La propia mediana de la serie.
+
+### Tercer cuartil
+La mediana de la segunda mitad de valores.
+
+### Valores máximo y mínimo
+Los valores máximo y mínimo de un conjunto de datos se obtienen con las funciones max y min.
+```{r}
+#Realizamos un resumen de la columna TV
+summary(TV)
+```
+```{r}
+#Realizamos un resumen de la columna radio
+summary(radio)
+```
+```{r}
+#Realizamos un resumen de la columna newspaper
+summary(newspaper)
+```
+```{r}
+#Realizamos un resumen de la columna sales
+summary(sales)
+```
+## Regresion Lineal Simple 
+El ajuste lineal es un modelo matemático usado para aproximar la relación de dependencia entre una variable dependiente Y, las variables independientes Xi y un término aleatorio ε. 
+
+Se procede a modelar la relación entre la Televisión (TV) y las ventas (Sales), en donde sales es la variable dependiente y TV es la variable independiente.
+
+### Diagrama de dispersión
+Es un tipo de diagrama matemático que utiliza las coordenadas cartesianas para mostrar los valores de dos variables para un conjunto de datos.
+```{r}
+#Graficar la dispersión entre ambas variables
+ggplot(ObjDataset, aes(TV, sales)) +ggtitle("Gráfico Dispersión TV vs Sales")+ geom_point(color="#af111c")
+```
+### Correlación
+Es el vínculo recíproco o correspondiente que existe entre dos o más elementos. Es decir la correlación alude a la proporcionalidad y la relación lineal que existe entre distintas variables. Si los valores de una variable se modifican de manera sistemática con respecto a los valores de otra, se dice que ambas variables se encuentran correlacionadas.
+```{r}
+#Calculo de la correlacion 
+cor(TV, sales)
+```
+Este resultado significa que existe un correlación positiva, es decir la relación entre las dos variables muestra que ambas aumentan simultáneamente.
+
+### Modelo lineal
+Usado en diferentes maneras de acuerdo al contexto. La manera más frecuente es en conexión con modelos de regresión y el término a menudo se toma como un sinónimo del modelo de regresión lineal.
+```{r}
+#Creamos el modelo de regresion lineal
+#Variable (Y) ~ Variable (X)
+Objrl=lm(sales~TV)
+```
+```{r}
+#Realizamos un resumen estadistico del modelo
+summary(Objrl)
+```
+*Residuals: Resumen de los residuos.
+
+*Coeficientes: -Intercept el estimado de la intercepción. y TV el estimado de la pendiente.
+
+*Residual standard error: Medida de variación de las observaciones alrededor de la regresión lineal (MSE: Mean Squeared Error).
+
+*R~cuadrado: Medida estadistica de cuan cerca estan los datos de la linea de regresión. Conocida tambien coef. de determinación. Porcentaje (%) de la variación de la variable respuesta (Y/outcome) que se explica por un modelo lineal. R-cuadr = variación explicada / variación total.
+
+*F~Statistic: test de hipotesis y pvalue: ["test que todos los coef... en el modelo sean cero"]
+
+```{r}
+#Mostramos los atributos del modelo
+attributes(Objrl)
+```
+*Coeficientes del modelo: Describen el tamaño de la relación entre un predictor y la variable de respuesta. Los coeficientes son los números por los cuales se multiplican los valores del término en una ecuación de regresión.
+
+```{r}
+#Observamos los coeficientes del modelo
+Objrl$coefficients
+```
+*Residuos: Son las diferencias entre los
+valores de la variable dependiente observados y los valores que predecimos a partir de
+nuestra recta de regresión. 
+```{r}
+#Mostramos la cabecera de los residuos del modelo
+head(Objrl$residuals)
+```
+*Call: formula con la que obtuvimos el modelo.
+```{r}
+#Mostramos la formula con la que obtuvimos el modelo
+head(Objrl$call)
+```
+### Intervalos de confianza
+Los intervalos de confianza marcan dos puntos dentro de los cuales es esperable que se encuentre el verdadero coeficiente del modelo.
+```{r}
+#Obtenemos valores de confianza
+confint(Objrl)
+```
+Interpretamos a estos intervalos afirmando que, con una confianza del 95%, la pendiente se encuentra entre 0.888 y 0.974. Una vez más encontramos que es muy poco probable que el verdadero valor sea 0.
+```{r}
+#Obtenemos valores de confianza
+confint(Objrl,level=0.99)
+```
+### ANOVA
+La técnica de análisis de varianza (ANOVA) también conocida como análisis factorial y desarrollada por Fisher en 1930, constituye la herramienta básica para el estudio del efecto de uno o más factores (cada uno con dos o más niveles) sobre la media de una variable continua. Es por lo tanto el test estadístico a emplear cuando se desea comparar las medias de dos o más grupos. Esta técnica puede generalizarse también para estudiar los posibles efectos de los factores sobre la varianza de una variable.
+```{r}
+#Valroes estimados
+anova(Objrl)
+```
+
+Obtenemos un vector con los estimados para y o de los residuos
+```{r}
+#Valroes estimados
+fitted(Objrl)
+```
+```{r}
+#Valroes residuos
+residuals(Objrl)
+```
+```{r}
+plot(sales, TV, main="Gráfico Dispersión Sales vs TV", col="#af111c",abline(Objrl,col="#00FF00"))
+```
+```{r}
+#Extraemos los coeficientes
+coef(Objrl)
+```
+```{r}
+ggplot(Objrl,aes(TV,sales))+ggtitle("Gráfico Dispersión TV vs Sales")+ geom_point(color="#af111c")+stat_smooth()
+```
+Los errores o residuos, son la diferencia entre el valor y (observado) y el valor ŷ (predicho/ajustado)
+
+*Primer grafico: "Si se cumple el supuesto de linealidad (se observa una linea) con una nube de puntos sin ningun patron.
+
+*Segundo grafico: qplot "CuartilCuartil grafico",el eje Y: es el error residual ordenado y estandarizado. El Eje X son los errores residuales ordenados teoricos, para el supuesto se espera visualizar una linea diagonal.
+
+*Tercer y Cuarto Grafico: Identifican la No-Linealidad, no varianza constante al igual que observaciones problematicas del modelo.
+
+Esperamos que los residuos se distribuyan como una normal. El gráfico Normal-QQ compara a los residuos estandarizados con una distribución normal teórica. Si se cumple el supuesto de normalidad de los residuos, los puntos deberían alinearse sobre la recta que corta el gráfico en 45° Como vemos, no es el caso: especialmente para los valores más bajos hay una desviación importante de los residuos.
+
+```{r}
+par(mfrow=c(2,2))
+plot(Objrl, col="#af111c")
+```
+### Criterio de información de Akaike
+El AIC busca un balance entre la capacidad predictiva de un modelo (la varianza explicada) y la cantidad de parámetros que este debe considerar para lograr un mejor ajuste. Es decir, premia a los modelos a medida que aumentan la varianza explicada, pero simultáneamente los penaliza a medida que aumentan el número de parámetros. 
+```{r}
+#Obtenemos el AIC del modelo
+AIC(Objrl)
+```
+```{r}
+#Obtenemos la predicción del modelo para nuevos datos
+predict(Objrl)
+```
+En estadística, la distancia de Cook o la D de Cook es una estimación comúnmente utilizada de la influencia de un punto de datos cuando se realiza un análisis de regresión de mínimos cuadrados.
+```{r}
+#Obtenemos las distancias de Cook
+cooks.distance(Objrl)
+```
+La gráfica de los coeficientes estimados de cada variable (sola o de interacción), en cada modelo y detectar los que son diferentes de 0, y los modelos que los contienen.
+```{r}
+#Grafico de los coeficientes
+coefplot(Objrl)
+```
+```{r}
+#Efectos de las variables, directos y con interacciones
+head(effects(Objrl))
+```
+```{r}
+
+```
+
